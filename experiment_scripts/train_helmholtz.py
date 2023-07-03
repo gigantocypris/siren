@@ -11,7 +11,6 @@ import configargparse
 import numpy as np
 
 p = configargparse.ArgumentParser()
-p.add('-c', '--config_filepath', required=False, is_config_file=True, help='Path to config file.')
 
 p.add_argument('--logging_root', type=str, default='./logs', help='root for logging')
 p.add_argument('--experiment_name', type=str, required=True,

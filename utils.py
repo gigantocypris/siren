@@ -150,6 +150,10 @@ def write_helmholtz_summary(model, model_input, gt, model_output, writer, total_
     writer.add_image(prefix + 'pred_mag', make_grid(pred_mag, scale_each=False, normalize=True),
                      global_step=total_steps)
 
+    plt.figure()
+    plt.imshow(pred_mag[0,0,:,:].detach().cpu().numpy())
+    plt.savefig(prefix + 'pred_mag_iter_' + str(total_steps)+'.png')
+
     if 'gt' in gt:
         gt_field = dataio.lin2img(gt['gt'])
         gt_field_cmpl = gt_field[...,0,:,:].cpu().numpy() + 1j * gt_field[...,1,:,:].cpu().numpy()
@@ -168,6 +172,11 @@ def write_helmholtz_summary(model, model_input, gt, model_output, writer, total_
                          global_step=total_steps)
         writer.add_image(prefix + 'gt_mag', make_grid(gt_mag, scale_each=False, normalize=True),
                          global_step=total_steps)
+        
+        plt.figure()
+        plt.imshow(gt_mag[0,:,:].detach().cpu().numpy())
+        plt.savefig(prefix + 'gt_mag_iter_' + str(total_steps)+'.png')
+
         min_max_summary(prefix + 'gt_real', gt_field[..., 0, :, :], writer, total_steps)
 
     velocity = torch.sqrt(1/dataio.lin2img(gt['squared_slowness_grid']))[:1]
@@ -186,7 +195,7 @@ def write_helmholtz_summary(model, model_input, gt, model_output, writer, total_
                                                                 scale_each=False, normalize=True),
                          global_step=total_steps)
 
-    if isinstance(model, meta_modules.NeuralProcessImplicit2DHypernetBVP):
+    if isinstance(model, meta_modules.NeuralProcessImplicit2DHypernet):
         hypernet_activation_summary(model, model_input, gt, model_output, writer, total_steps, prefix)
 
 
