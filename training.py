@@ -85,6 +85,7 @@ def train(model, train_dataloader, epochs, lr, steps_til_summary, epochs_til_che
 
                 train_losses.append(train_loss.item())
                 writer.add_scalar("total_train_loss", train_loss, total_steps)
+                print("total_train_loss", train_loss)
 
                 if not total_steps % steps_til_summary:
                     torch.save(model.state_dict(),
@@ -119,6 +120,7 @@ def train(model, train_dataloader, epochs, lr, steps_til_summary, epochs_til_che
                                 val_losses.append(val_loss)
 
                             writer.add_scalar("val_loss", np.mean(val_losses), total_steps)
+                            print("val_loss", np.mean(val_losses))
                         model.train()
 
                 total_steps += 1
